@@ -1,0 +1,21 @@
+name: Build and publish image to dockerhub
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u mohandelsaify --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t mohandelsaify/docker-project:latest .
+
+      - name: Push image to DockerHub
+        run: docker push mohandelsaify/docker-project:latest
